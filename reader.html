@@ -31,12 +31,22 @@
         qrbox: { width: 250, height: 250 }
     };
 
-    function onScanSuccess(decodedText, decodedResult) {
+    function onScanSuccess(decodedText) {
         // Выводим результат на экран
         const resultDiv = document.getElementById("result");
         resultDiv.innerHTML += `<p>Найден QR-код: ${decodedText}</p>`;
         
-        // Здесь можно добавить логику для обработки найденного QR-кода
+        // Отправляем данные на сервер
+        fetch('/save-data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ data: decodedText })
+        })
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch(error => console.error('Ошибка:', error));
     }
 
     function onScanError(errorMessage) {
