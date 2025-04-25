@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сканер QR-кодов</title>
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <style>
+        #reader {
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            border: 1px solid #ccc;
+        }
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Сканер QR-кодов</h1>
+<div id="reader"></div>
+<div id="result"></div>
+
+<script>
+    const html5QrCode = new Html5Qrcode("reader");
+
+    const config = {
+        fps: 10,
+        qrbox: { width: 250, height: 250 }
+    };
+
+    function onScanSuccess(decodedText, decodedResult) {
+        // Выводим результат на экран
+        const resultDiv = document.getElementById("result");
+        resultDiv.innerHTML += `<p>Найден QR-код: ${decodedText}</p>`;
+        
+        // Здесь можно добавить логику для обработки найденного QR-кода
+    }
+
+    function onScanError(errorMessage) {
+        // Обработка ошибок (если необходимо)
+    }
+
+    // Запускаем сканирование
+    html5QrCode.start(
+        { facingMode: "environment" }, // Используем заднюю камеру
+        config,
+        onScanSuccess,
+        onScanError)
+    .catch(err => {
+        console.error("Ошибка при запуске сканера:", err);
+    });
+</script>
+
+</body>
+</html>
